@@ -1,0 +1,40 @@
+name: very_good_coffee
+description: A Very Good Project created by Very Good CLI.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  alex_flipnote_api_client:
+    path: './packages/alex_flipnote_api_client'
+  bloc: ^9.0.0
+  bloc_concurrency: ^0.3.0
+  coffee_repository:
+    path: './packages/coffee_repository'
+  dynamic_color: ^1.8.1
+  equatable: ^2.0.7
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_platform_widgets: ^9.0.0
+  go_router: ^16.2.0
+  http: ^1.5.0
+  hydrated_bloc: ^10.1.1
+  intl: ^0.20.2
+  logger: ^2.6.1
+  stream_transform: ^2.1.1
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^9.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true

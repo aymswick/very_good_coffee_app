@@ -1,0 +1,11 @@
+{
+    "@@locale": "en",
+    "@counterAppBarTitle": {
+        "description": "Text shown in the AppBar of the Counter Page"
+    },
+    "@genericErrorSnackbarText": {
+        "description": "Text shown in the ErrorSnackbar when details are sparse."
+    },
+    "counterAppBarTitle": "Counter",
+    "genericErrorSnackbarText": "Oops! Something went wrong."
+}
