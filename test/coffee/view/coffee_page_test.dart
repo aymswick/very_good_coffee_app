@@ -53,7 +53,9 @@ void main() {
 
         registerFallbackValue(MockCacheManager());
         registerFallbackValue(CoffeeFetched());
+      });
 
+      testWidgets('displays CoffeeList of CoffeeItem', (tester) async {
         when(() => bloc.state).thenReturn(
           CoffeeState(
             status: CoffeeStatus.success,
@@ -61,9 +63,6 @@ void main() {
             favorites: testCoffees.sublist(0, 2),
           ),
         );
-      });
-
-      testWidgets('displays CoffeeList of CoffeeItem', (tester) async {
         await tester.pumpApp(buildCoffeeView(), repository: repository);
 
         expect(find.byType(CoffeeList), findsOneWidget);
@@ -73,6 +72,13 @@ void main() {
       testWidgets('displays only favorites when filtered', (
         tester,
       ) async {
+        when(() => bloc.state).thenReturn(
+          CoffeeState(
+            status: CoffeeStatus.success,
+            coffees: testCoffees,
+            favorites: testCoffees.sublist(0, 2),
+          ),
+        );
         await tester.pumpApp(buildCoffeeView(), repository: repository);
 
         await tester.tap(find.byType(FilterChip));
@@ -89,6 +95,13 @@ void main() {
         (
           tester,
         ) async {
+          when(() => bloc.state).thenReturn(
+            CoffeeState(
+              status: CoffeeStatus.success,
+              coffees: testCoffees,
+              favorites: testCoffees.sublist(0, 2),
+            ),
+          );
           whenListen(
             bloc,
             Stream.value(
@@ -109,6 +122,13 @@ void main() {
       testWidgets('adds CoffeeFavorited event when favorite button tapped', (
         tester,
       ) async {
+        when(() => bloc.state).thenReturn(
+          CoffeeState(
+            status: CoffeeStatus.success,
+            coffees: testCoffees,
+            favorites: testCoffees.sublist(0, 2),
+          ),
+        );
         await tester.pumpApp(buildCoffeeView(), repository: repository);
         await tester.pump(Durations.short1);
 
@@ -125,6 +145,13 @@ void main() {
       testWidgets('adds CoffeeDownloaded event when download button tapped', (
         tester,
       ) async {
+        when(() => bloc.state).thenReturn(
+          CoffeeState(
+            status: CoffeeStatus.success,
+            coffees: testCoffees,
+            favorites: testCoffees.sublist(0, 2),
+          ),
+        );
         await tester.pumpApp(buildCoffeeView(), repository: repository);
         final downloadButton = find
             .byKey(const Key('download_coffee_btn'))
@@ -140,6 +167,14 @@ void main() {
       testWidgets('adds CoffeeFetched event when scrolling', (
         tester,
       ) async {
+        when(() => bloc.state).thenReturn(
+          CoffeeState(
+            status: CoffeeStatus.success,
+            coffees: testCoffees,
+            favorites: testCoffees.sublist(0, 2),
+          ),
+        );
+
         await tester.pumpApp(buildCoffeeView(), repository: repository);
 
         final list = find.byType(Scrollable);
@@ -156,6 +191,13 @@ void main() {
       testWidgets('resets message after emitting', (
         tester,
       ) async {
+        when(() => bloc.state).thenReturn(
+          CoffeeState(
+            status: CoffeeStatus.success,
+            coffees: testCoffees,
+            favorites: testCoffees.sublist(0, 2),
+          ),
+        );
         whenListen(
           bloc,
           Stream.fromIterable([

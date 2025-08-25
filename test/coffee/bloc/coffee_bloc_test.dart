@@ -175,7 +175,7 @@ void main() {
         expect: () => [
           const CoffeeState(
             status: CoffeeStatus.failure,
-            message: 'Null check operator used on a null value',
+            message: 'ImageCacheMissException',
           ),
         ],
       );

@@ -45,12 +45,16 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
         event.cacheKey,
       );
 
+      if (imageFile == null) {
+        throw ImageCacheMissException();
+      }
+
       // TODO(ant): should set up a proper function type for gallery/image storage
       try {
         await event.storeImage(
-          imageFile!.file.path,
+          imageFile.file.path,
         );
-      } on Exception catch (e) {
+      } catch (e) {
         logger.e(e);
         throw SaveToGalleryException();
       }
@@ -62,7 +66,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
           message: '${event.coffee.name} saved to gallery!',
         ),
       );
-    } on Exception catch (e) {
+    } catch (e) {
       logger.e(e);
       emit(state.copyWith(status: CoffeeStatus.failure, message: '$e'));
     }
@@ -132,6 +136,13 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
     Emitter<CoffeeState> emit,
   ) async {
     emit(state.copyWith(message: ''));
+  }
+}
+
+class ImageCacheMissException implements Exception {
+  @override
+  String toString() {
+    return 'ImageCacheMissException';
   }
 }
 
