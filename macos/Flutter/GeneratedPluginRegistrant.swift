@@ -5,8 +5,12 @@
 import FlutterMacOS
 import Foundation
 
-import dynamic_color
+import gal
+import path_provider_foundation
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  DynamicColorPlugin.register(with: registry.registrar(forPlugin: "DynamicColorPlugin"))
+  GalPlugin.register(with: registry.registrar(forPlugin: "GalPlugin"))
+  PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
+  SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
 }

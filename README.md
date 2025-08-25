@@ -12,6 +12,10 @@ A Very Good Project created by Very Good CLI.
 
 ## Getting Started 🚀
 
+
+From the `packages/coffee_repository` folder, run the build runner to generate JSON models:
+`dart run build_runner build`
+
 This project contains 3 flavors:
 
 - development
