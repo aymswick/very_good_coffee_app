@@ -9,7 +9,6 @@ void main() {
     late AlexFlipnoteCoffeeApi api;
     late CoffeeRepository repository;
 
-    // AlexFlipnoteAPI returns simple JSON
     final testCoffees = List.generate(
       3,
       (index) => Coffee(
