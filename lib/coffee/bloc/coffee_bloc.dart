@@ -62,7 +62,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
           message: '${event.coffee.name} saved to gallery!',
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       logger.e(e);
       emit(state.copyWith(status: CoffeeStatus.failure, message: '$e'));
     }
@@ -89,7 +89,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
                 .toList(),
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       logger.e(e);
       emit(state.copyWith(status: CoffeeStatus.failure));
     }
@@ -118,7 +118,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
       );
     } on ClientException catch (e) {
       logger.e(e);
-      // TODO(ant): connectivity_plus is a more robust solution for guarding the app based on network state
+      // TODO(ant): connectivity_plus is a more robust solution for network
       emit(
         state.copyWith(status: CoffeeStatus.failure, message: 'Network Error'),
       );

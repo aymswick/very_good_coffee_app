@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_api/coffee_api.dart';
 import 'package:coffee_repository/coffee_repository.dart';
@@ -152,29 +154,31 @@ class CoffeeView extends StatelessWidget {
     return BlocConsumer<CoffeeBloc, CoffeeState>(
       listener: (context, state) {
         context.read<CoffeeBloc>().add(MessagesReset());
-        if (state.message != null && state.message!.isNotEmpty) {
-          if (state.status == CoffeeStatus.success) {
-            ScaffoldMessenger.of(context)
-              ..clearSnackBars()
-              ..showSnackBar(
-                SuccessSnackBar(
-                  state.message!,
-                  theme: theme,
-                ),
-              );
-          } else if (state.status == CoffeeStatus.failure) {
-            final error = state.message != null
-                ? state.message!
-                : l10n.genericErrorSnackbarText;
+        if (Platform.isAndroid) {
+          if (state.message != null && state.message!.isNotEmpty) {
+            if (state.status == CoffeeStatus.success) {
+              ScaffoldMessenger.of(context)
+                ..clearSnackBars()
+                ..showSnackBar(
+                  SuccessSnackBar(
+                    state.message!,
+                    theme: theme,
+                  ),
+                );
+            } else if (state.status == CoffeeStatus.failure) {
+              final error = state.message != null
+                  ? state.message!
+                  : l10n.genericErrorSnackbarText;
 
-            ScaffoldMessenger.of(context)
-              ..clearSnackBars()
-              ..showSnackBar(
-                ErrorSnackBar(
-                  error,
-                  theme: theme,
-                ),
-              );
+              ScaffoldMessenger.of(context)
+                ..clearSnackBars()
+                ..showSnackBar(
+                  ErrorSnackBar(
+                    error,
+                    theme: theme,
+                  ),
+                );
+            }
           }
         }
       },
