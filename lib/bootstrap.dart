@@ -5,9 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
-final logger = Logger();
-
 const throttleDuration = Duration(seconds: 5);
+
+final logger = Logger();
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {

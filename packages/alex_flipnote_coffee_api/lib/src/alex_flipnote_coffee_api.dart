@@ -29,10 +29,14 @@ class AlexFlipnoteCoffeeApi extends CoffeeApi {
 
       logger.d(response);
 
-      final parsed = await jsonDecode(response);
-      final filename = parsed['file'];
+      try {
+        final parsed = await jsonDecode(response);
+        final filename = parsed['file'];
 
-      yield Coffee(url: Uri.parse(filename), name: filename.split('/').last);
+        yield Coffee(url: Uri.parse(filename), name: filename.split('/').last);
+      } catch (e) {
+        logger.e(e);
+      }
     }
   }
 }

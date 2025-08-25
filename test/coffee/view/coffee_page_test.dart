@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:coffee_api/coffee_api.dart';
 import 'package:coffee_repository/coffee_repository.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,13 @@ void main() {
 
     group('CoffeeView', () {
       setUp(() {
+        registerFallbackValue(
+          Coffee(url: Uri.parse('https://dummy.com'), name: 'dummy'),
+        );
+
+        registerFallbackValue(MockCacheManager());
+        registerFallbackValue(CoffeeFetched());
+
         when(() => bloc.state).thenReturn(
           CoffeeState(
             status: CoffeeStatus.success,
@@ -76,16 +84,99 @@ void main() {
         );
       });
 
-      testWidgets('download icon state changes color when tapped', (
+      testWidgets(
+        'displays empty list when favorites are empty when filtered',
+        (
+          tester,
+        ) async {
+          whenListen(
+            bloc,
+            Stream.value(
+              CoffeeState(status: CoffeeStatus.success, coffees: testCoffees),
+            ),
+          );
+          await tester.pumpApp(buildCoffeeView(), repository: repository);
+
+          expect(find.byType(CoffeeItem), findsAtLeast(1));
+
+          await tester.tap(find.byType(FilterChip));
+          await tester.pump();
+
+          expect(find.byType(CoffeeItem), findsNothing);
+        },
+      );
+
+      testWidgets('adds CoffeeFavorited event when favorite button tapped', (
+        tester,
+      ) async {
+        await tester.pumpApp(buildCoffeeView(), repository: repository);
+        await tester.pump(Durations.short1);
+
+        await tester.tap(find.byKey(const Key('favorite_coffee_btn')).first);
+        await tester.pump();
+
+        verify(
+          () => bloc.add(
+            any(that: isA<CoffeeFavorited>()),
+          ),
+        ).called(1);
+      });
+
+      testWidgets('adds CoffeeDownloaded event when download button tapped', (
         tester,
       ) async {
         await tester.pumpApp(buildCoffeeView(), repository: repository);
         final downloadButton = find
             .byKey(const Key('download_coffee_btn'))
             .first;
+
         await tester.tap(downloadButton);
 
-        expect((downloadButton as IconButton).color, Colors.blue);
+        verify(
+          () => bloc.add(any(that: isA<CoffeeDownloaded>())),
+        ).called(1);
+      });
+
+      testWidgets('adds CoffeeFetched event when scrolling', (
+        tester,
+      ) async {
+        await tester.pumpApp(buildCoffeeView(), repository: repository);
+
+        final list = find.byType(Scrollable);
+        final bottom = find.byType(BottomLoader);
+
+        await tester.scrollUntilVisible(bottom, 10, scrollable: list);
+
+        await tester.pump();
+
+        verify(
+          () => bloc.add(any(that: isA<CoffeeFetched>())),
+        ).called(1);
+      });
+      testWidgets('resets message after emitting', (
+        tester,
+      ) async {
+        whenListen(
+          bloc,
+          Stream.fromIterable([
+            CoffeeState(
+              status: CoffeeStatus.success,
+              coffees: testCoffees,
+              message: 'test message',
+            ),
+            CoffeeState(
+              status: CoffeeStatus.failure,
+              coffees: testCoffees,
+              message: 'test message',
+            ),
+          ]),
+        );
+
+        await tester.pumpApp(buildCoffeeView(), repository: repository);
+
+        verify(
+          () => bloc.add(any(that: isA<MessagesReset>())),
+        ).called(2);
       });
     });
   });

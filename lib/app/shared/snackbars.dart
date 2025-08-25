@@ -19,37 +19,6 @@ class ErrorSnackBar extends SnackBar {
   final ThemeData theme;
 }
 
-class NeutralSnackBar extends SnackBar {
-  NeutralSnackBar(
-    this.message, {
-    required this.theme,
-    this.progress = false,
-    super.duration,
-    super.key,
-  }) : super(
-         behavior: SnackBarBehavior.fixed,
-         content: Row(
-           children: [
-             if (progress)
-               Padding(
-                 padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
-                 child: CircularProgressIndicator.adaptive(
-                   backgroundColor: theme.colorScheme.onSurfaceVariant,
-                 ),
-               ),
-             Text(
-               message,
-               style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
-             ),
-           ],
-         ),
-         backgroundColor: theme.colorScheme.surfaceContainerHighest,
-       );
-  final String message;
-  final bool progress;
-  final ThemeData theme;
-}
-
 class SuccessSnackBar extends SnackBar {
   SuccessSnackBar(
     this.message, {
